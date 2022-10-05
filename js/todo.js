@@ -13,14 +13,18 @@ function saveToDos() {
 function deleteToDo(event) {
     // console.dir(event.target);
     const li = event.target.parentElement;
+    console.log(li.id);
     li.remove();
+    toDos = toDos.filter((toDo) => toDo.id !== parseInt(li.id));
+    saveToDos();
 }
 
 function paintToDo(newTodo) {
     const li = document.createElement("li");
+    li.id = newTodo.id;
 
     const span = document.createElement("span");
-    span.innerText = newTodo;
+    span.innerText = newTodo.text;
 
     const button = document.createElement("button");
     button.innerText = "❌"
@@ -36,9 +40,13 @@ function handleToDoSubmit(event) {
     event.preventDefault();
     // console.log(toDoInput.value);
     const newTodo = toDoInput.value;
-    toDoInput.value ="";
-    toDos.push(newTodo); // array 에 저장
-    paintToDo(newTodo);
+    toDoInput.value =""; // 입력창 초기화
+    const newTodoObj = {
+        text: newTodo,
+        id: Date.now(),
+    }
+    toDos.push(newTodoObj); // array 에 저장
+    paintToDo(newTodoObj);
     saveToDos(); // local storage 에 저장
 }
 
